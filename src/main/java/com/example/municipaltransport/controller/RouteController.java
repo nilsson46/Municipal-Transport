@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -80,5 +81,12 @@ public class RouteController {
 
         Route updatedRoute= routeService.save(existingRoute);
         return  ResponseEntity.ok(updatedRoute);
+    }
+    @PutMapping ("/{id}/delay")
+    public ResponseEntity<Route> routeDelay(@PathVariable Long id, @RequestBody Map<String, Integer> delay){
+        int newDelay = delay.get("delay");
+
+        Route route = routeService.updateDelay(id, newDelay);
+        return ResponseEntity.ok(route);
     }
 }
