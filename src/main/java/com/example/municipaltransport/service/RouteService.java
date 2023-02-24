@@ -40,7 +40,7 @@ public class RouteService {
     }
 
     public List<Route> findByStartAndEndLocation(String startLocation, String endLocation) {
-        List<Route> routes = routeRepository.findRouteByStartAndEndLocation(startLocation, endLocation);
+        List<Route> routes = routeRepository.findRouteByStartLocationAndEndLocation(startLocation, endLocation);
         return routes;
     }
 }
