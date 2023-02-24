@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RouteService {
@@ -15,8 +16,24 @@ public class RouteService {
     public List<Route> getAll(){
         return routeRepository.findAll();
     }
-    public Route findByStartLocation(String startLocation){
+
+    public List<Route> findByStartLocation(String startLocation){
         return routeRepository.findRouteByStartLocation(startLocation);
     }
 
+    public Route save(Route route) {
+        return routeRepository.save(route);
+    }
+
+    public List<Route> findByEndLocation(String endLocation) {
+        return  routeRepository.findRouteByEndLocation(endLocation);
+    }
+
+    public Optional<Route> findById(Long routeId) {
+        return routeRepository.findById(routeId);
+
+    }
+
+    public List<Route> findByIsFavorite() {
+    }
 }
