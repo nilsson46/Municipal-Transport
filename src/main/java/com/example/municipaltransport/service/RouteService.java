@@ -34,6 +34,7 @@ public class RouteService {
 
     }
 
-    public List<Route> findByIsFavorite() {
-    }
+    /*public List<Route> findByIsFavorite(String favorites) {
+        return routeRepository.findByIsFavorite(favorites);
+    } */
 }

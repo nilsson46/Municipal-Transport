@@ -42,11 +42,11 @@ public class RouteController {
         return routes;
     }
 
-    @GetMapping("routes/favorites")
+   /* @GetMapping("routes/favorites")
     public ResponseEntity<List<Route>> getFavoriteRoutes(){
         List<Route> favoriteRoutes = routeService.findByIsFavorite();
         return ResponseEntity.ok(favoriteRoutes);
-    }
+    } */
 
     @PutMapping("routes/{id}/favorite")
 
