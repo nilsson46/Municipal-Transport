@@ -1,5 +1,6 @@
 package com.example.municipaltransport.service;
 
+import com.example.municipaltransport.exception.ExceptionHandler;
 import com.example.municipaltransport.model.Route;
 import com.example.municipaltransport.repository.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,10 @@ public class RouteService {
         return routes;
     }
 
-    public Route updateDelay(Long id, int delay){
-       Route route = routeRepository.findById(id);
+    public Route updateDelay(Long id, int delay) {
+        Route route = routeRepository.findById(id).orElseThrow(() -> new ExceptionHandler(id));
+
+        route.setDelay(delay);
+        return routeRepository.save(route);
+    }
 }
