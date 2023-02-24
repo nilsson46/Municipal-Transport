@@ -81,4 +81,6 @@ public class RouteController {
         Route updatedRoute= routeService.save(existingRoute);
         return  ResponseEntity.ok(updatedRoute);
     }
+    @PutMapping ("/{id}/delay")
+    public ResponseEntity<Route> routeDelay(@PathVariable Long id, @RequestBody delay   )
 }

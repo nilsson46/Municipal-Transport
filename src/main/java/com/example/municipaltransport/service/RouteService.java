@@ -3,6 +3,7 @@ package com.example.municipaltransport.service;
 import com.example.municipaltransport.model.Route;
 import com.example.municipaltransport.repository.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,4 +44,7 @@ public class RouteService {
         List<Route> routes = routeRepository.findRouteByStartLocationAndEndLocation(startLocation, endLocation);
         return routes;
     }
+
+    public Route updateDelay(Long id, int delay){
+       Route route = routeRepository.findById(id);
 }
