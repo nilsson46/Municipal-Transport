@@ -5,6 +5,7 @@ import com.example.municipaltransport.repository.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,11 +14,11 @@ public class RouteService {
     @Autowired
     RouteRepository routeRepository;
 
-    public List<Route> getAll(){
+    public List<Route> getAll() {
         return routeRepository.findAll();
     }
 
-    public List<Route> findByStartLocation(String startLocation){
+    public List<Route> findByStartLocation(String startLocation) {
         return routeRepository.findRouteByStartLocation(startLocation);
     }
 
@@ -26,7 +27,7 @@ public class RouteService {
     }
 
     public List<Route> findByEndLocation(String endLocation) {
-        return  routeRepository.findRouteByEndLocation(endLocation);
+        return routeRepository.findRouteByEndLocation(endLocation);
     }
 
     public Optional<Route> findById(Long routeId) {
@@ -34,7 +35,12 @@ public class RouteService {
 
     }
 
-    /*public List<Route> findByIsFavorite(String favorites) {
-        return routeRepository.findByIsFavorite(favorites);
-    } */
+    public List<Route> findByIsFavorite() {
+        return routeRepository.findByIsFavorite(true);
+    }
+
+    public List<Route> findByStartAndEndLocation(String startLocation, String endLocation) {
+        List<Route> routes = routeRepository.findRouteByStartLocationAndEndLocation(startLocation, endLocation);
+        return routes;
+    }
 }

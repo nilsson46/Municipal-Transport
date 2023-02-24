@@ -10,5 +10,6 @@ import java.util.List;
 public interface RouteRepository extends JpaRepository<Route, Long> {
     List<Route> findRouteByStartLocation(String startLocation);
     List<Route> findRouteByEndLocation (String endLocation);
-    //List<Route> findByIsFavorite();
+    List<Route> findByIsFavorite(boolean b);
+    List<Route> findRouteByStartLocationAndEndLocation(String startLocation, String endLocation);
 }
