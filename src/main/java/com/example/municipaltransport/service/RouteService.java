@@ -40,16 +40,7 @@ public class RouteService {
     }
 
     public List<Route> findByStartAndEndLocation(String startLocation, String endLocation) {
-        List<Route> routes = new ArrayList<>();
-        Route start = (Route) routeRepository.findRouteByStartLocation(startLocation);
-        if(start != null){
-            routes.add(start);
-        }
-
-        Route end = (Route) routeRepository.findRouteByEndLocation(endLocation);
-        if(end != null) {
-            routes.add(end);
-        }
+        List<Route> routes = routeRepository.findRouteByStartAndEndLocation(startLocation, endLocation);
         return routes;
     }
 }
