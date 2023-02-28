@@ -12,7 +12,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("routes")
+@RequestMapping("/routes/*")
 public class RouteController {
 
     @Autowired
