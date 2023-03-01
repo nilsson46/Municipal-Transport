@@ -5,10 +5,8 @@ import com.example.municipaltransport.model.Route;
 import com.example.municipaltransport.repository.RouteRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,6 +56,13 @@ public class RouteService {
         Route route = routeRepository.findById(id).orElseThrow(() -> new ExceptionHandler(id));
 
         route.setDelay(delay);
+        return routeRepository.save(route);
+    }
+
+    public Route addDescription(Long id, String description) {
+        Route route = routeRepository.findById(id).orElseThrow(() -> new ExceptionHandler(id));
+
+        route.setDelayDescription(description);
         return routeRepository.save(route);
     }
 }

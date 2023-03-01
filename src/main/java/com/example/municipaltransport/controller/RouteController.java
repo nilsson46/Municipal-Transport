@@ -5,6 +5,7 @@ import com.example.municipaltransport.service.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class RouteController {
 
     @Autowired
     private RouteService routeService;
-
+    RestTemplate restTemplate;
     private List<Route> routeList;
 
     @GetMapping
@@ -87,6 +88,13 @@ public class RouteController {
         int newDelay = delay.get("delay");
 
         Route route = routeService.updateDelay(id, newDelay);
+        return ResponseEntity.ok(route);
+    }
+
+    @PutMapping("/{id}/delayDescription")
+    public ResponseEntity<Route> routeDelayDescription (@PathVariable Long id, @RequestBody Map<String, Integer> description){
+        String newDescription = String.valueOf(description.get("description"));
+        Route route = routeService.addDescription(id, newDescription);
         return ResponseEntity.ok(route);
     }
 }
