@@ -68,7 +68,7 @@ public class RouteService {
                log.info("Start location and end location are stations");
                 return routes;
             } else if (!route.isStartLocationStation() && !route.isEndLocationStation()) {
-                log.info("Should post walk route from Julius");
+                log.info("Walk route from Julius because none of the locations are stations");
                 StringBuilder builder = new StringBuilder("https://microservice-enskild-trafik-enskild-trafik.azuremicroservices.io");
                 builder.append("/routes/").append("katrineholm").append("/to/").append("stockholm").append("/walk");
                 return getRoutes(routes, builder);
