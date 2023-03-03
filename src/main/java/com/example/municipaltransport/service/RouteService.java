@@ -29,6 +29,7 @@ public class RouteService {
     }
 
     public Route save(Route route) {
+        log.debug("Route got saved");
         return routeRepository.save(route);
     }
 
@@ -46,8 +47,8 @@ public class RouteService {
 
     public Route updateDelay(Long id, int delay) {
         Route route = routeRepository.findById(id).orElseThrow(() -> new ExceptionHandler(id));
-
         route.setDelay(delay);
+        log.debug("Delay was updated");
         return routeRepository.save(route);
     }
 
@@ -55,6 +56,7 @@ public class RouteService {
         Route route = routeRepository.findById(id).orElseThrow(() -> new ExceptionHandler(id));
 
         route.setDelayDescription(description);
+        log.debug("Delay description was made");
         return routeRepository.save(route);
     }
 
@@ -63,24 +65,20 @@ public class RouteService {
 
         for(Route route : routes) {
             if (route.isStartLocationStation() && route.isEndLocationStation()) {
-                System.out.println("==================================");
-                System.out.println("Start location and end location are stations");
+               log.info("Start location and end location are stations");
                 return routes;
             } else if (!route.isStartLocationStation() && !route.isEndLocationStation()) {
-                System.out.println("==================================");
-                System.out.println("Should post walk route from Julius");
+                log.info("Walk route from Julius because none of the locations are stations");
                 StringBuilder builder = new StringBuilder("https://microservice-enskild-trafik-enskild-trafik.azuremicroservices.io");
                 builder.append("/routes/").append("katrineholm").append("/to/").append("stockholm").append("/walk");
                 return getRoutes(routes, builder);
             } else if (route.isEndLocationStation()) {
-                System.out.println("==================================");
-                System.out.println("End location is station");
+                log.info("End location is station");
                 StringBuilder builder = new StringBuilder("https://microservice-enskild-trafik-enskild-trafik.azuremicroservices.io");
                 builder.append("/routes").append("/Start/").append(startLocation);
                 return getRoutes(routes, builder);
             } else if (route.isStartLocationStation()) {
-                System.out.println("==================================");
-                System.out.println("Start location is station");
+                log.info("Start location is station");
                 StringBuilder builder = new StringBuilder("https://microservice-enskild-trafik-enskild-trafik.azuremicroservices.io");
                 builder.append("/routes").append("/End/").append(endLocation);
                 return getRoutes(routes, builder);
