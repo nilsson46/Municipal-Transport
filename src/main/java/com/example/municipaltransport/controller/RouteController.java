@@ -54,7 +54,7 @@ public class RouteController {
         return ResponseEntity.ok(favoriteRoutes);
     }
 
-    @PutMapping("/{id}/favorite")
+    @PutMapping("/favorite/{id}")
 
     public ResponseEntity<Route> markAsFavorite(@PathVariable Long id) {
         Optional<Route> route = routeService.findById(id);
@@ -68,7 +68,7 @@ public class RouteController {
         return ResponseEntity.ok(updatedRoute);
     }
 
-    @PutMapping("/{id}/unmark-favorite")
+    @PutMapping("/unmark-favorite/{id}")
 
     public ResponseEntity<Route> unmarkAsFavorite(@PathVariable Long id) {
         Optional<Route> route = routeService.findById(id);
@@ -82,7 +82,7 @@ public class RouteController {
         return ResponseEntity.ok(updatedRoute);
     }
 
-    @PutMapping("/{id}/delay")
+    @PutMapping("/delay/{id}")
     public ResponseEntity<Route> routeDelay(@PathVariable Long id, @RequestBody Map<String, Integer> delay) {
         int newDelay = delay.get("delay");
         Route route = routeService.updateDelay(id, newDelay);
