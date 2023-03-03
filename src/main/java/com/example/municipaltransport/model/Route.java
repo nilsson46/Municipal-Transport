@@ -20,7 +20,7 @@ public class Route {
     private String departure;
     private String arrival;
     private int travelTime;
-    private boolean delay;
+    private int delay;
     private String delayDescription;
     private int changes;
     private boolean isFavorite;
