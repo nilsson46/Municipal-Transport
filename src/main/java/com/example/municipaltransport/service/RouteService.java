@@ -5,22 +5,19 @@ import com.example.municipaltransport.model.Route;
 import com.example.municipaltransport.repository.RouteRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Log4j2
 public class RouteService {
     @Autowired
     RouteRepository routeRepository;
-
-    /*public RouteService (RouteRepository routeRepository){
-        this.routeRepository = routeRepository;
-    }*/
+    @Autowired
+    RestTemplate restTemplate;
 
     public List<Route> getAll() {
         log.debug("All courses is being fetched");
@@ -43,15 +40,8 @@ public class RouteService {
         return routeRepository.findById(routeId);
 
     }
-
     public List<Route> findByIsFavorite() {
         return routeRepository.findByIsFavorite(true);
-    }
-
-    public List<Route> findByStartAndEndLocation(String startLocation, String endLocation) {
-        log.info("Didn't find a route");
-        List<Route> routes = routeRepository.findRouteByStartLocationAndEndLocation(startLocation, endLocation);
-        return routes;
     }
 
     public Route updateDelay(Long id, int delay) {
@@ -59,5 +49,59 @@ public class RouteService {
 
         route.setDelay(delay);
         return routeRepository.save(route);
+    }
+
+    public Route addDescription(Long id, String description) {
+        Route route = routeRepository.findById(id).orElseThrow(() -> new ExceptionHandler(id));
+
+        route.setDelayDescription(description);
+        return routeRepository.save(route);
+    }
+
+    public List<Route> findByStartAndEndLocation(String startLocation, String endLocation) {
+        List<Route> routes = routeRepository.findByStartLocationAndEndLocation(startLocation, endLocation);
+
+        for(Route route : routes) {
+            if (route.isStartLocationStation() && route.isEndLocationStation()) {
+                System.out.println("==================================");
+                System.out.println("Start location and end location are stations");
+                return routes;
+            } else if (!route.isStartLocationStation() && !route.isEndLocationStation()) {
+                System.out.println("==================================");
+                System.out.println("Should post walk route from Julius");
+                StringBuilder builder = new StringBuilder("https://microservice-enskild-trafik-enskild-trafik.azuremicroservices.io");
+                builder.append("/routes/").append("katrineholm").append("/to/").append("stockholm").append("/walk");
+                return getRoutes(routes, builder);
+            } else if (route.isEndLocationStation()) {
+                System.out.println("==================================");
+                System.out.println("End location is station");
+                StringBuilder builder = new StringBuilder("https://microservice-enskild-trafik-enskild-trafik.azuremicroservices.io");
+                builder.append("/routes").append("/Start/").append(startLocation);
+                return getRoutes(routes, builder);
+            } else if (route.isStartLocationStation()) {
+                System.out.println("==================================");
+                System.out.println("Start location is station");
+                StringBuilder builder = new StringBuilder("https://microservice-enskild-trafik-enskild-trafik.azuremicroservices.io");
+                builder.append("/routes").append("/End/").append(endLocation);
+                return getRoutes(routes, builder);
+            }
+        }
+
+        return routes;
+    }
+
+    public List<Route> getRoutes(List<Route> routes, StringBuilder builder) {
+        ResponseEntity<List<Route>> externalRoutesResponse = getExternalRoutes(builder);
+        List<Route> externalRoutes = externalRoutesResponse.getBody();
+        assert externalRoutes != null;
+        routes.addAll(externalRoutes);
+        return routes;
+    }
+
+    private ResponseEntity<List<Route>> getExternalRoutes(StringBuilder builder) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Route[]> routeResponse = restTemplate.getForEntity(builder.toString(), Route[].class);
+        List<Route> externalRoutes = Arrays.asList(Objects.requireNonNull(routeResponse.getBody()));
+        return ResponseEntity.ok(externalRoutes);
     }
 }

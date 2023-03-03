@@ -21,6 +21,9 @@ public class Route {
     private String arrival;
     private int travelTime;
     private int delay;
+    private String delayDescription;
     private int changes;
     private boolean isFavorite;
+    private boolean isStartLocationStation;
+    private boolean isEndLocationStation;
 }
