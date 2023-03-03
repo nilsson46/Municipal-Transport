@@ -46,13 +46,15 @@ public class RouteService {
         return routeRepository.findByIsFavorite(true);
     }
 
-    public List<Route> findByStartAndEndLocation(String startLocation, String endLocation) {
+
+
+    /*public List<Route> findByStartAndEndLocation(String startLocation, String endLocation) {
         log.info("Didn't find a route");
         List<Route> routes = routeRepository.findRouteByStartLocationAndEndLocation(startLocation, endLocation);
         return routes;
-    }
+    } */
 
-    public Route updateDelay(Long id, int delay) {
+    public Route updateDelay(Long id, boolean delay) {
         Route route = routeRepository.findById(id).orElseThrow(() -> new ExceptionHandler(id));
 
         route.setDelay(delay);
@@ -65,4 +67,15 @@ public class RouteService {
         route.setDelayDescription(description);
         return routeRepository.save(route);
     }
+
+    public List<Route> findByStartAndEndLocation(String startLocation, String endLocation) {
+        return routeRepository.findRouteByStartLocationAndEndLocation(startLocation, endLocation);
+
+    }
+
+   /* public List<Route> findByIsStation( boolean b, String startLocation) {
+        retu rn routeRepository.finByIsStation(b, startLocation );
+    } */
+
+    //public boolean findByStationEnd(String endLocation){return routeRepository.findByStationEnd(true);}
 }
